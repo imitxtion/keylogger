@@ -1,0 +1,11 @@
+# Virtual environment
+venv/
+
+# Build and distribution directories
+build/
+dist/
+
+# Compiled files
+*.spec
+*.ico
+*.exe
